@@ -23,8 +23,6 @@ namespace Opdracht6_Transformations
 
         List<Sphere> spheres;
 
-        
-
         Sphere body1;
         Sphere body2;
         Sphere body3;
