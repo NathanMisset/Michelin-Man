@@ -23,14 +23,7 @@ namespace Opdracht6_Transformations
 
         List<Sphere> spheres;
 
-        //Sphere sun;
-        //Sphere earth;
-        //Sphere mars;
-        //Sphere jupiter;
-        //Sphere saturnus;
-        //Sphere uranus;
-        //Sphere moon;
-        //Sphere pluto;
+        
 
         Sphere body1;
         Sphere body2;
@@ -61,14 +54,13 @@ namespace Opdracht6_Transformations
         Sphere leg23;
         Sphere foot2;
 
-        //float rEarth;
-        //float rMars;
-        //float rJupiter;
-        //float rSaturnus;
-        //float rUranus;
-        //float rMoon;
 
-        //Matrix moonMatrix;
+        float rarm;
+
+        Matrix matrixArm11;
+        Matrix matrixArm12;
+        Matrix matrixArm13;
+        Matrix matrixhand1;
 
         float cameraMoveR;
         float cameraMoveL;
@@ -92,10 +84,11 @@ namespace Opdracht6_Transformations
 
             SetupCamera(true);
 
-            Window.Title = "HvA - Simulation & Physics - Opdracht 6 - Transformations - press <> to rotate camera";
+            Window.Title = "HvA - Simulation & Physics - Opdracht 6 - Michelin Man - press <> to rotate camera";
 
             spheres = new List<Sphere>();
 
+            //Make Body Parts
             spheres.Add(body1 = new Sphere(Matrix.CreateScale(new Vector3(4, 2, 2)), Color.White, 30));
             spheres.Add(body2 = new Sphere(Matrix.CreateScale(new Vector3(4, 2, 2)), Color.White, 30));
             body2.Transform.Translation = Vector3.Transform(body2.Transform.Translation, Matrix.CreateTranslation(new Vector3(0, 2, 0)));
@@ -104,50 +97,53 @@ namespace Opdracht6_Transformations
             spheres.Add(body4 = new Sphere(Matrix.CreateScale(new Vector3(4, 2, 2)), Color.White, 30));
             body4.Transform.Translation = Vector3.Transform(body4.Transform.Translation, Matrix.CreateTranslation(new Vector3(0, 6, 0)));
 
+            //Make Neck and Head
+            spheres.Add(neck = new Sphere(Matrix.CreateScale((float)1.5),Color.White, 30));
+            neck.Transform.Translation = Vector3.Transform(neck.Transform.Translation, Matrix.CreateTranslation(new Vector3(0, 8, 0)));
+            spheres.Add(head1 = new Sphere(Matrix.CreateScale(new Vector3(3, 2, 2)), Color.White, 30));
+            head1.Transform.Translation = Vector3.Transform(head1.Transform.Translation, Matrix.CreateTranslation(new Vector3(0, 10, 0)));
+            spheres.Add(head2 = new Sphere(Matrix.CreateScale(2), Color.White, 30));
+            head2.Transform.Translation = Vector3.Transform(head2.Transform.Translation, Matrix.CreateTranslation(new Vector3(0, 12,0)));
 
+            //Make Left Arm and Hand
+            spheres.Add(arm11 = new Sphere(Matrix.CreateScale(new Vector3(3, 2, 2)), Color.White, 30));
+            arm11.Transform.Translation = Vector3.Transform(arm11.Transform.Translation, Matrix.CreateTranslation(new Vector3(-4, 5, 0)));
+            spheres.Add(arm12 = new Sphere(Matrix.CreateScale(new Vector3(3, 2, 2)), Color.White, 30));
+            arm12.Transform.Translation = Vector3.Transform(arm12.Transform.Translation, Matrix.CreateTranslation(new Vector3(-6, 5, 0)));
+            spheres.Add(arm13 = new Sphere(Matrix.CreateScale(new Vector3(3, 2, 2)), Color.White, 30));
+            arm13.Transform.Translation = Vector3.Transform(arm13.Transform.Translation, Matrix.CreateTranslation(new Vector3(-8, 5, 0)));
+            spheres.Add(hand1 = new Sphere(Matrix.CreateScale(new Vector3(3, 2, 2)), Color.White, 30));
+            hand1.Transform.Translation = Vector3.Transform(hand1.Transform.Translation, Matrix.CreateTranslation(new Vector3(-11, 5, 0)));
 
-            //// Step 1: Study the way the Sphere class is used in Initialize()
-            //// Step 2: Scale the sun uniformly (= the same factor in x, y and z directions) by a factor 2
-            //spheres.Add(sun = new Sphere(Matrix.Identity, Color.Yellow, 30));
-            //sun.Transform.M11 = 2;
-            //sun.Transform.M22 = 2;
-            //sun.Transform.M33 = 2;
+            //Make Right Arm and Hand
+            spheres.Add(arm21 = new Sphere(Matrix.CreateScale(2), Color.White, 30));
+            arm21.Transform.Translation = Vector3.Transform(arm21.Transform.Translation, Matrix.CreateTranslation(new Vector3(4, 5, 0)));
+            spheres.Add(arm22 = new Sphere(Matrix.CreateScale(2), Color.White, 30));
+            arm22.Transform.Translation = Vector3.Transform(arm22.Transform.Translation, Matrix.CreateTranslation(new Vector3(6, 5, 0)));
+            spheres.Add(arm23 = new Sphere(Matrix.CreateScale(2), Color.White, 30));
+            arm23.Transform.Translation = Vector3.Transform(arm23.Transform.Translation, Matrix.CreateTranslation(new Vector3(8, 5, 0)));
+            spheres.Add(hand2 = new Sphere(Matrix.CreateScale(2), Color.White, 30));
+            hand2.Transform.Translation = Vector3.Transform(hand2.Transform.Translation, Matrix.CreateTranslation(new Vector3(11, 5, 0)));
 
-            //// Step 3: Create an earth Sphere, with radius, distance and color as given in the assignment
-            //spheres.Add(earth = new Sphere(Matrix.Identity, Color.Navy, 30));
-            //earth.Transform.Translation = new Vector3(16,0,0);
+            //Make Left leg and Foot
+            spheres.Add(leg11 = new Sphere(Matrix.CreateScale(2), Color.White, 30));
+            leg11.Transform.Translation = Vector3.Transform(leg11.Transform.Translation, Matrix.CreateTranslation(new Vector3(-2, -2, 0)));
+            spheres.Add(leg12 = new Sphere(Matrix.CreateScale(2), Color.White, 30));
+            leg12.Transform.Translation = Vector3.Transform(leg12.Transform.Translation, Matrix.CreateTranslation(new Vector3(-2, -4, 0)));
+            spheres.Add(leg13 = new Sphere(Matrix.CreateScale(2), Color.White, 30));
+            leg13.Transform.Translation = Vector3.Transform(leg13.Transform.Translation, Matrix.CreateTranslation(new Vector3(-2, -6, 0)));
+            spheres.Add(foot1 = new Sphere(Matrix.CreateScale(2), Color.White, 30));
+            foot1.Transform.Translation = Vector3.Transform(foot1.Transform.Translation, Matrix.CreateTranslation(new Vector3(-2, -9, 0)));
 
-            //// Step 4: Create 4 other planets: mars, jupiter, saturnus, uranus (radius, distance and color as given)
-            //spheres.Add(mars = new Sphere(Matrix.Identity, Color.Red, 30));
-            //mars.Transform.Translation = new Vector3(21,0,0);
-            //mars.Transform.M11 = 0.6f;
-            //mars.Transform.M22 = 0.6f;
-            //mars.Transform.M33 = 0.6f;
-
-            //spheres.Add(jupiter = new Sphere(Matrix.Identity, Color.Orange, 30));
-            //jupiter.Transform.Translation = new Vector3(27, 0, 0);
-            //jupiter.Transform.M11 = 1.7f;
-            //jupiter.Transform.M22 = 1.7f;
-            //jupiter.Transform.M33 = 1.7f;
-
-            //spheres.Add(saturnus = new Sphere(Matrix.Identity, Color.Khaki, 30));
-            //saturnus.Transform.Translation = new Vector3(36, 0, 0);
-            //saturnus.Transform.M11 = 1.6f;
-            //saturnus.Transform.M22 = 1.6f;
-            //saturnus.Transform.M33 = 1.6f;
-
-            //spheres.Add(uranus = new Sphere(Matrix.Identity, Color.Cyan, 30));
-            //uranus.Transform.Translation = new Vector3(43, 0, 0);
-            //uranus.Transform.M11 = 1.5f;
-            //uranus.Transform.M22 = 1.5f;
-            //uranus.Transform.M33 = 1.5f;
-
-            //// Step 7: Create the moon (radius, distance and color as given)            
-            //spheres.Add(moon = new Sphere(Matrix.Identity, Color.LightGray, 30));
-            //moon.Transform.Translation = new Vector3(18, 0, 0);
-            //moon.Transform.M11 = 0.5f;
-            //moon.Transform.M22 = 0.5f;
-            //moon.Transform.M33 = 0.5f;
+            //Make Right Leg and Foot
+            spheres.Add(leg21 = new Sphere(Matrix.CreateScale(2), Color.White, 30));
+            leg21.Transform.Translation = Vector3.Transform(leg21.Transform.Translation, Matrix.CreateTranslation(new Vector3(2, -2, 0)));
+            spheres.Add(leg22 = new Sphere(Matrix.CreateScale(2), Color.White, 30));
+            leg22.Transform.Translation = Vector3.Transform(leg22.Transform.Translation, Matrix.CreateTranslation(new Vector3(2, -4, 0)));
+            spheres.Add(leg23 = new Sphere(Matrix.CreateScale(2), Color.White, 30));
+            leg23.Transform.Translation = Vector3.Transform(leg23.Transform.Translation, Matrix.CreateTranslation(new Vector3(2, -6, 0)));
+            spheres.Add(foot2 = new Sphere(Matrix.CreateScale(2), Color.White, 30));
+            foot2.Transform.Translation = Vector3.Transform(foot2.Transform.Translation, Matrix.CreateTranslation(new Vector3(2, -9, 0)));
 
             base.Initialize();
         }
@@ -185,48 +181,39 @@ namespace Opdracht6_Transformations
         {
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
-                // Step 10: Make the camera position rotate around the origin depending on gameTime.ElapsedGameTime.TotalSeconds
-
                 cameraMoveR = (float)1.5 * (float)gameTime.ElapsedGameTime.TotalSeconds;
                 SetupCamera();
-
-
                 cameraPosition = Vector3.Transform(cameraPosition, Matrix.CreateRotationY(cameraMoveR));
             }
             else if (Keyboard.GetState().IsKeyDown(Keys.Left))
             {
-                // Step 10: Make the camera position rotate around the origin depending on gameTime.ElapsedGameTime.TotalSeconds
-
                 SetupCamera();
                 cameraMoveL = (float)-1.5 * (float)gameTime.ElapsedGameTime.TotalSeconds;
                 cameraPosition = Vector3.Transform(cameraPosition, Matrix.CreateRotationY(cameraMoveL));
             }
+            rarm += (float)Math.PI * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            //// Step 6: Make the planets rotate, all with different speeds between 0.15 and 0.5 (radians) per second
-            //rEarth = (float)0.15 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            //rMars = (float)0.50 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            //rJupiter = (float)0.25 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            //rSaturnus = (float)0.35 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            //rUranus = (float)0.15 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            //rMoon = (float)1.5 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-            //earth.Transform.Translation = Vector3.Transform(earth.Transform.Translation, Matrix.CreateRotationY(rEarth));
-            //mars.Transform.Translation = Vector3.Transform(mars.Transform.Translation, Matrix.CreateRotationY(rMars));
-            //jupiter.Transform.Translation = Vector3.Transform(jupiter.Transform.Translation, Matrix.CreateRotationY(rJupiter));
-            //saturnus.Transform.Translation = Vector3.Transform(saturnus.Transform.Translation, Matrix.CreateRotationY(rSaturnus));
-            //uranus.Transform.Translation = Vector3.Transform(uranus.Transform.Translation, Matrix.CreateRotationY(rUranus));
-
-            //// Step 7: Make the moon rotate around the earth, speed 1.5
-            //moonMatrix = Matrix.CreateTranslation(-earth.Transform.Translation) * Matrix.CreateRotationY(rMoon) ;
-            //moonMatrix = moonMatrix * Matrix.CreateRotationZ(rMoon);
-            //moonMatrix = moonMatrix * Matrix.CreateTranslation(earth.Transform.Translation) ;
-            //moonMatrix = moonMatrix * Matrix.CreateRotationY(rEarth);
-            ////moonMatrix = moonMatrix * Matrix.CreateFromAxisAngle(new Vector3(0, 0, 0), 45); 
-            //moon.Transform.Translation = Vector3.Transform(moon.Transform.Translation, moonMatrix);
+            Matrix totalMatrix = Matrix.CreateTranslation(new Vector3(0, (float)Math.Sin(rarm)/70, 0));
 
 
-            ////moonMatrix = moonMatrix * Matrix.CreateFromAxisAngle(new Vector3(0, 0, 0), 45);
-            //// Step 8: Change the orbit of the moon such that it is rotated 45 degrees toward the sun/origin(see example!)
+            matrixArm11 = Matrix.CreateTranslation(-body4.Transform.Translation) * totalMatrix;
+            matrixArm11 = matrixArm11 * Matrix.CreateTranslation(body4.Transform.Translation);
+            arm11.Transform.Translation = Vector3.Transform(arm11.Transform.Translation, matrixArm11);
+
+            totalMatrix *= Matrix.CreateTranslation(new Vector3((float)Math.Sin(rarm) / 40, (float)Math.Sin(rarm) / 40, 0));
+            matrixArm12 = Matrix.CreateTranslation(-arm11.Transform.Translation) * totalMatrix;
+            matrixArm12 = matrixArm12 * Matrix.CreateTranslation(arm11.Transform.Translation);
+            arm12.Transform.Translation = Vector3.Transform(arm12.Transform.Translation, matrixArm12);
+
+            totalMatrix *= Matrix.CreateTranslation(new Vector3((float)Math.Sin(rarm) / 40, (float)Math.Sin(rarm) / 40, 0));
+            matrixArm13 = Matrix.CreateTranslation(-arm12.Transform.Translation) * totalMatrix;
+            matrixArm13 = matrixArm13 * Matrix.CreateTranslation(arm12.Transform.Translation);
+            arm13.Transform.Translation = Vector3.Transform(arm13.Transform.Translation, matrixArm13);
+
+            totalMatrix *= Matrix.CreateTranslation(new Vector3((float)Math.Sin(rarm) / 40, (float)Math.Sin(rarm) / 40, 0));
+            matrixhand1 = Matrix.CreateTranslation(-arm13.Transform.Translation) * totalMatrix;
+            matrixhand1 = matrixhand1 * Matrix.CreateTranslation(arm13.Transform.Translation);
+            hand1.Transform.Translation = Vector3.Transform(hand1.Transform.Translation, matrixhand1);
 
             base.Update(gameTime);
         }
